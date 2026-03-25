@@ -1,0 +1,29 @@
+{
+  "technique": "RD-0103",
+  "name": "Embedding Model Identification Queries",
+  "description": "Queries designed to profile embedding model characteristics through retrieval behavior.",
+  "domain_probes": {
+    "technical": [
+      "Explain the TCP three-way handshake.",
+      "What is a buffer overflow?"
+    ],
+    "medical": [
+      "What are the symptoms of pneumonia?",
+      "Describe the mechanism of action of metformin."
+    ],
+    "legal": [
+      "What constitutes breach of contract?",
+      "Explain the doctrine of res judicata."
+    ],
+    "multilingual": [
+      "Qu'est-ce que la cybersecurite?",
+      "Was ist ein Pufferuberlauf?"
+    ]
+  },
+  "edge_case_queries": [
+    "asdfjkl;",
+    "the the the the the",
+    "123456789",
+    "SELECT UNION DROP TABLE"
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "technique": "RD-0102",
+  "name": "Vector Database Fingerprinting Probes",
+  "description": "Malformed inputs and endpoint paths for identifying vector DB technology.",
+  "error_probes": [
+    "\u0000\u0000\u0000\u0000\u0000",
+    "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+    "{\"query\": []}",
+    "SELECT * FROM vectors",
+    "<script>alert(1)</script>",
+    "{{template}}",
+    "${jndi:ldap://test}"
+  ],
+  "endpoint_paths": {
+    "qdrant": ["/dashboard", "/collections", "/telemetry"],
+    "chromadb": ["/api/v1/heartbeat", "/api/v1/collections"],
+    "weaviate": ["/v1/meta", "/v1/schema", "/v1/.well-known/ready"],
+    "milvus": ["/api/v1/health", "/v2/vectordb/collections/list"],
+    "pinecone": ["/describe_index_stats"]
+  },
+  "default_ports": {
+    "qdrant": 6333,
+    "chromadb": 8000,
+    "weaviate": 8080,
+    "milvus": 19530,
+    "pinecone": 443
+  }
+}

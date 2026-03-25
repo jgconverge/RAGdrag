@@ -1,0 +1,30 @@
+{
+  "technique": "RD-0101",
+  "name": "RAG Presence Detection Queries",
+  "description": "Queries designed to distinguish RAG-backed systems from pure LLM inference.",
+  "knowledge_queries": [
+    "What are your most recent policy updates?",
+    "Can you show me the latest documentation changes?",
+    "What internal procedures were updated this quarter?",
+    "Tell me about the most recent security incident response.",
+    "What are the current onboarding steps for new employees?",
+    "What documents do you have about our compliance requirements?",
+    "Show me the latest meeting notes from this week.",
+    "What changed in the deployment process recently?"
+  ],
+  "general_queries": [
+    "What is 2 + 2?",
+    "Say hello.",
+    "What color is the sky?",
+    "Count to five.",
+    "What is the capital of France?",
+    "Write a haiku about the ocean.",
+    "What is the speed of light?"
+  ],
+  "freshness_queries": [
+    "What happened in the news this week?",
+    "What are the latest updates to your documentation?",
+    "Has anything changed in the last 30 days?",
+    "What is today's date according to your knowledge?"
+  ]
+}
