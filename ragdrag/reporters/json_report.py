@@ -44,6 +44,7 @@ def generate_report(
         "summary": {
             "rag_detected": fingerprint_result.rag_detected,
             "vector_db": fingerprint_result.vector_db,
+            "detected_response_field": fingerprint_result.detected_response_field,
             "total_findings": len(fingerprint_result.findings),
             "high_confidence": sum(
                 1 for f in fingerprint_result.findings if f.confidence == "high"
@@ -55,6 +56,7 @@ def generate_report(
                 1 for f in fingerprint_result.findings if f.confidence == "low"
             ),
         },
+        "infrastructure": fingerprint_result.infrastructure,
         "findings": [
             {
                 "technique_id": f.technique_id,
@@ -92,13 +94,24 @@ def _build_summary_box(report: dict) -> str:
     rag = str(summary["rag_detected"])
     vdb = summary["vector_db"] or "unknown"
     findings_str = f"{total} ({h}H / {m}M / {lo}L)"
+    resp_field = summary.get("detected_response_field")
+
+    infra = report.get("infrastructure", {})
+    server_tech = infra.get("server_tech", [])
+    frameworks = [f["name"] for f in infra.get("rag_frameworks", [])]
 
     rows = [
         f"  Target:       {target}",
         f"  RAG Detected: {rag}",
         f"  Vector DB:    {vdb}",
-        f"  Findings:     {findings_str}",
     ]
+    if resp_field:
+        rows.append(f"  Response Key:  {resp_field}")
+    if server_tech:
+        rows.append(f"  Server:        {', '.join(server_tech)}")
+    if frameworks:
+        rows.append(f"  Framework:     {', '.join(frameworks)}")
+    rows.append(f"  Findings:     {findings_str}")
     inner_width = max(len(r) for r in rows) + 2
     top = "\u2554" + "\u2550" * inner_width + "\u2557"
     bot = "\u255a" + "\u2550" * inner_width + "\u255d"

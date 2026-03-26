@@ -82,12 +82,19 @@ def fingerprint(
         click.echo(click.style("[*] ", fg="cyan") + f"Query field: {query_field}")
         click.echo("")
 
+        def _progress(msg: str) -> None:
+            if msg.startswith("[*]"):
+                click.echo(click.style(msg[:4], fg="cyan") + msg[4:])
+            else:
+                click.echo(click.style(msg, dim=True))
+
         result = run_full_fingerprint(
             target=target,
             client=client,
             query_field=query_field,
             response_field=response_field,
             scan_ports=not no_port_scan,
+            progress=_progress,
         )
 
         report = generate_report(result, output_path=output)
@@ -216,8 +223,14 @@ def scan(target: str, phases: str, output: str | None) -> None:
         from ragdrag.utils.http_client import build_client
 
         client = build_client()
+        def _progress(msg: str) -> None:
+            if msg.startswith("[*]"):
+                click.echo(click.style(msg[:4], fg="cyan") + msg[4:])
+            else:
+                click.echo(click.style(msg, dim=True))
+
         try:
-            result = run_full_fingerprint(target=target, client=client)
+            result = run_full_fingerprint(target=target, client=client, progress=_progress)
             report = generate_report(result, output_path=output)
             click.echo(format_summary(report))
         except httpx.ConnectError:

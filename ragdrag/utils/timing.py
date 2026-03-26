@@ -19,6 +19,7 @@ class TimingResult:
     elapsed_ms: float
     status_code: int
     response_text: str = ""
+    response_headers: dict[str, str] = field(default_factory=dict)
 
 
 @dataclass
@@ -56,14 +57,26 @@ class TimingStats:
     def add(self, result: TimingResult) -> None:
         self.results.append(result)
 
-    def to_dict(self) -> dict:
-        return {
+    def to_dict(self, include_responses: bool = False) -> dict:
+        d: dict = {
             "count": self.count,
             "mean_ms": round(self.mean_ms, 2),
             "min_ms": round(self.min_ms, 2),
             "max_ms": round(self.max_ms, 2),
             "delta_ms": round(self.delta_ms, 2),
         }
+        if include_responses:
+            d["queries"] = [
+                {
+                    "query": r.query,
+                    "elapsed_ms": round(r.elapsed_ms, 2),
+                    "status_code": r.status_code,
+                    "response_text": r.response_text[:2000],
+                    "response_headers": r.response_headers,
+                }
+                for r in self.results
+            ]
+        return d
 
 
 def measure_elapsed(start: float) -> float:
